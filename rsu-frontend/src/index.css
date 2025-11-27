@@ -1,0 +1,239 @@
+/* Keep this file minimal so styles.css controls the look */
+
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --background: #f5f7fa;
+  --text: #1a1a1a;
+  --subtext: #6b7280;
+}
+
+/* Let styles.css handle colors, layout, etc. */
+body {
+  margin: 0;
+}
+
+/* ================================
+   FINAL PRINT FIX — WORKS IN EDGE,
+   CHROME, AND ALL PRINT IFRAMES
+   ================================ */
+@media print {
+
+  /* Hide EVERYTHING on the entire page */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Only show the timetable container */
+  .printable-area,
+  .printable-area * {
+    visibility: visible !important;
+  }
+
+  /* Move the table to the top-left so it prints cleanly */
+  .printable-area {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Force full-width table */
+  table {
+    width: 100% !important;
+  }
+
+  /* Hide all buttons no matter where they appear */
+  button,
+  a.btn,
+  .print-hide,
+  header,
+  nav,
+  .navbar,
+  .topbar {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Remove default browser footer/header spacing */
+  @page {
+    margin: 12mm !important;
+  }
+}
+
+/* FINAL PRINT FIX */
+@media print {
+  .print-remove {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
+/* =====================================================
+   ULTIMATE OVERRIDE — REMOVE HEADER + BUTTONS + NAV
+   ===================================================== */
+@media print {
+
+  /* Remove entire header section */
+  header.print-remove,
+  header.print-remove * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Remove any element marked */
+  .print-remove,
+  .print-remove * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Hide all buttons globally */
+  button,
+  a.btn,
+  .btn,
+  .ghost {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Hide all flex rows that commonly contain buttons */
+  div[style*="flex"],
+  div[style*="gap"],
+  div[style*="justify"],
+  div[style*="align"] {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Show ONLY the printable timetable area */
+  .printable-area,
+  .printable-area * {
+    visibility: visible !important;
+    display: block !important;
+    position: static !important;
+  }
+
+  /* Prevent weird 2-page split */
+  @page {
+    margin: 10mm !important;
+  }
+}
+
+/* ===== FIX PRINT VIEW COMPLETELY ===== */
+
+/* Remove EVERYTHING except the timetable during print */
+@media print {
+
+  /* Hide all navigation & layout components */
+  header,
+  nav,
+  .navbar,
+  .topbar,
+  .menu-buttons,
+  .button-row,
+  .export-buttons,
+  .logout-btn,
+  button,
+  .print-buttons,
+  .back-button,
+  .footer,
+  .actions,
+  .action-buttons,
+  .controls {
+      display: none !important;
+      visibility: hidden !important;
+  }
+
+  /* Hide the Logout button specifically in your layout */
+  .logout,
+  #logout,
+  .logout-button {
+      display: none !important;
+  }
+
+  /* Hide the top heading bar */
+  .app-header,
+  .title-bar,
+  .site-title,
+  h1.page-title {
+      display: none !important;
+  }
+
+  /* Force only the timetable card to show */
+  .card {
+      box-shadow: none !important;
+      border: 1px solid #ddd !important;
+      margin: 0 !important;
+      padding: 0 !important;
+  }
+
+  /* Remove page margins */
+  @page {
+      margin: 10mm;
+  }
+
+  body {
+      background: white !important;
+  }
+
+  /* Ensure table prints full width */
+  table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+  }
+
+  /* Ensure table borders print clean */
+  table td, table th {
+      border: 1px solid #ccc !important;
+      padding: 6px !important;
+  }
+}
+
+/* FINAL OVERRIDE — FORCE REMOVE BUTTONS EVEN INSIDE CARD */
+@media print {
+
+  /* Completely remove the entire button row */
+  .print-remove,
+  .print-remove *,
+  div.print-remove,
+  div.print-remove * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* If the print iframe clones buttons as anonymous divs */
+  div[style*="flex"][style*="gap"][style*="12px"],
+  div[style*="margin-top: 12px"],
+  div[style*="flex"][style*="8px"] {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  .printable-area,
+  .printable-area * {
+    visibility: visible !important;
+  }
+
+  .printable-area {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+  }
+}

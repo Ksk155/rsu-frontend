@@ -1,0 +1,161 @@
+:root {
+  --bg:#fff;
+  --surface:#f7f9fc;
+  --text:#1c2430;
+  --subtext:#5b6573;
+  --border:#e2e8f0;
+  --accent:#21409a;
+  --accent-soft:#e6ecff;
+}
+
+* { box-sizing:border-box; }
+
+html,
+body,
+#root {
+  height:100%;
+}
+
+body {
+  margin:0;
+  background:var(--surface);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+a {
+  color:var(--accent);
+  text-decoration:none;
+}
+a:hover { text-decoration:underline; }
+
+.container {
+  max-width:1080px;
+  margin:0 auto;
+  padding:24px;
+}
+
+.card {
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  box-shadow:0 2px 14px rgba(28,36,48,.06);
+  padding:18px 20px;
+}
+
+.btn {
+  display:inline-block;
+  border:1px solid var(--accent);
+  color:#fff;
+  background:var(--accent);
+  padding:10px 14px;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+.btn.ghost {
+  color:var(--accent);
+  background:#fff;
+}
+.btn:disabled {
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.input,
+.select {
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#fff;
+  padding:10px 12px;
+  font-size:15px;
+}
+
+.table {
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+.table th,
+.table td {
+  border-bottom:1px solid var(--border);
+  padding:12px 14px;
+  text-align:left;
+}
+.table th {
+  background:var(--accent-soft);
+  font-weight:700;
+}
+
+/* AUTH PAGE LAYOUT */
+.auth-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: var(--background, #f5f7fa);
+}
+
+/* LOGIN CARD */
+.auth-card {
+  width: 380px;
+  padding: 32px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* FORM GROUPS */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: var(--text, #333);
+}
+
+.form-group input {
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #d6d6d6;
+  border-radius: 6px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #3258e8;
+  box-shadow: 0 0 0 2px rgba(50, 88, 232, 0.2);
+}
+
+/* GENERIC CARD (ERROR BOX) */
+.card {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+/* BUTTONS */
+.btn.primary {
+  background: #1A3FA6;
+  color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn.primary:hover {
+  background: #0f2e82;
+}
