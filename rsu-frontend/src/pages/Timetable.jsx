@@ -221,13 +221,10 @@ export default function Timetable() {
         </div>
 
         {/* RIGHT SIDE */}
-        <button
-          className="btn ghost"
-          type="button"
-          onClick={() => navigate("/dashboard")}
-        >
+        <Link to="/dashboard" className="btn ghost">
           Back to Dashboard
-        </button>
+        </Link>
+
       </div>
     </div>
   );
