@@ -202,6 +202,7 @@ export default function Timetable() {
           justifyContent: "space-between",
           alignItems: "center",
           marginTop: "12px",
+          pointerEvents: "auto",
         }}
       >
         {/* LEFT SIDE */}
