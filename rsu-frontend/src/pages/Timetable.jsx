@@ -221,7 +221,7 @@ export default function Timetable() {
         </div>
 
         {/* RIGHT SIDE */}
-        <Link to="/dashboard" className="btn ghost">
+        <Link to="/" className="btn ghost">
           Back to Dashboard
         </Link>
 
