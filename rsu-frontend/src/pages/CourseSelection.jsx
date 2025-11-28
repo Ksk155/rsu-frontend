@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiGet, apiPost } from "../lib/apiClient";
+import rsuLogo from "../assets/rsu-logo-h.png";
 
 export default function CourseSelection() {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ export default function CourseSelection() {
 
       await apiPost("/api/student_courses", {
         student_id: student.student_id,
-        courses: selectedCourses, // array of course_id values
+        courses: selectedCourses,
       });
 
       setMessage("Courses saved successfully!");
@@ -90,12 +91,34 @@ export default function CourseSelection() {
 
   return (
     <div style={{ marginTop: 32 }}>
-      <h1>Course Selection</h1>
-      <p style={{ color: "var(--subtext)" }}>
-        Select all subjects you are taking this semester.
-      </p>
+      {/* ✅ HEADER WITH LOGO */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <div>
+          <h1 style={{ marginBottom: 4 }}>Course Selection</h1>
+          <p style={{ color: "var(--subtext)" }}>
+            Select all subjects you are taking this semester.
+          </p>
+        </div>
 
-      {loading && <div>Loading.</div>}
+        <img
+          src={rsuLogo}
+          alt="RSU Logo"
+          style={{
+            height: 42,
+            maxWidth: "100%",
+            marginTop: 8,
+          }}
+        />
+      </div>
+
+      {loading && <div>Loading...</div>}
 
       {error && (
         <div
