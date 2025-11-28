@@ -224,7 +224,7 @@ export default function Timetable() {
         <button
           className="btn ghost"
           type="button"
-          onClick={() => navigate("/", { replace: true })}
+          onClick={() => navigate("/dashboard")}
         >
           Back to Dashboard
         </button>

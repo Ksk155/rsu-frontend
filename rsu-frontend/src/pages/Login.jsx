@@ -46,7 +46,7 @@ export default function Login() {
           <img
             src={rsuLogo}
             alt="RSU Logo"
-            style={{ width: 90, height: "auto" }}
+            style={{ width: 120, height: "auto" }}
           />
         </div>
 
