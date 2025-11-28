@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiGet } from "../lib/apiClient";
+import rsuLogo from "../assets/rsu-logo-h.png";
 
 const DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
@@ -20,7 +21,6 @@ export default function MyTimetable() {
   const [timetable, setTimetable] = useState([]);
   const [error, setError] = useState("");
 
-  // ⭐ preferences returned directly from /student-plan
   const [prefs, setPrefs] = useState(null);
 
   // Load logged-in student
@@ -32,14 +32,12 @@ export default function MyTimetable() {
     }
     try {
       setStudent(JSON.parse(raw));
-    } catch (e) {
+    } catch {
       navigate("/login");
     }
   }, [navigate]);
 
-  // ========================================
-  // RUN HYBRID (GA + SA)
-  // ========================================
+  // RUN HYBRID
   const runHybrid = async () => {
     if (!student) return;
 
@@ -54,19 +52,13 @@ export default function MyTimetable() {
     setTimetable([]);
 
     try {
-      // ⭐ Hybrid result already includes: timetable + preferences + credits
       const res = await apiGet(`/api/optimize_hybrid/${id}?r=${Date.now()}`);
 
       if (res.error) throw new Error(res.error);
       if (res.status !== "ok") throw new Error("Hybrid failed");
 
-      // timetable as returned
-      const rows = Array.isArray(res.timetable) ? res.timetable : [];
-      setTimetable(rows);
-
-      // ⭐ set preferences directly
+      setTimetable(Array.isArray(res.timetable) ? res.timetable : []);
       setPrefs(res.preference || null);
-
     } catch (err) {
       console.error(err);
       setError(err?.message || "Failed to generate hybrid timetable.");
@@ -75,32 +67,24 @@ export default function MyTimetable() {
     }
   };
 
-  // ========================================
-  // SAVE HYBRID TIMETABLE
-  // ========================================
+  // SAVE TIMETABLE
   const handleSaveTimetable = () => {
     if (!student || timetable.length === 0) return;
 
-    try {
-      localStorage.setItem(
-        "hybrid_timetable",
-        JSON.stringify({
-          student_id: student.student_id,
-          saved_at: new Date().toISOString(),
-          rows: timetable,
-          preference: prefs || null,
-        })
-      );
-    } catch (e) {
-      console.error("Failed to save timetable locally", e);
-    }
+    localStorage.setItem(
+      "hybrid_timetable",
+      JSON.stringify({
+        student_id: student.student_id,
+        saved_at: new Date().toISOString(),
+        rows: timetable,
+        preference: prefs || null,
+      })
+    );
 
     navigate("/timetable");
   };
 
-  // ========================================
-  // GROUP BY DAY — EXACTLY AS BEFORE
-  // ========================================
+  // GROUP BY DAY
   const timetableByDay = useMemo(() => {
     const map = {};
     DAYS.forEach((d) => (map[d] = []));
@@ -122,23 +106,27 @@ export default function MyTimetable() {
 
   return (
     <div className="card">
+      {/* ✅ RSU LOGO */}
+      <div style={{ textAlign: "center", marginBottom: 12 }}>
+        <img
+          src={rsuLogo}
+          alt="RSU Logo"
+          style={{ height: 44, maxWidth: "100%" }}
+        />
+      </div>
+
       <h2 style={{ marginTop: 0 }}>My Hybrid Timetable (GA + SA)</h2>
 
       <p style={{ color: "var(--subtext)", marginBottom: 16 }}>
         Student: <b>{student.full_name}</b> ({student.student_id})
       </p>
 
-      {/* ⭐ SMALL FIX — Preferences block (NO UI CHANGES) */}
       {prefs && (
         <div
           className="card"
-          style={{
-            padding: 12,
-            marginBottom: 16,
-            background: "#f7f7ff",
-          }}
+          style={{ padding: 12, marginBottom: 16, background: "#f7f7ff" }}
         >
-          <p style={{ margin: 0, lineHeight: 1.6 }}>
+          <p style={{ margin: 0 }}>
             <b>Avoid Monday:</b> {prefs.avoid_monday === 1 ? "Yes" : "No"}
             <br />
             <b>Preferred Time:</b> {prefs.prefer_time || "None"}
@@ -159,11 +147,7 @@ export default function MyTimetable() {
       {error && (
         <div
           className="card"
-          style={{
-            background: "#ffe8e8",
-            borderColor: "#cc0000",
-            marginBottom: 12,
-          }}
+          style={{ background: "#ffe8e8", borderColor: "#cc0000" }}
         >
           <b>Error:</b> {error}
         </div>
@@ -174,8 +158,6 @@ export default function MyTimetable() {
           Click <b>“Generate Hybrid”</b> to see your timetable.
         </p>
       )}
-
-      {loading && <p>Running Hybrid GA+SA…</p>}
 
       {timetable.length > 0 && (
         <div style={{ marginTop: 18 }}>
@@ -198,22 +180,17 @@ export default function MyTimetable() {
                     No classes
                   </p>
                 ) : (
-                  <ul style={{ paddingLeft: 16, margin: 0 }}>
-                    {timetableByDay[day].map((m, index) => {
-                      const start = m.start_time?.slice(0, 5) || "";
-                      const end = m.end_time?.slice(0, 5) || "";
-
-                      return (
-                        <li key={index} style={{ marginBottom: 6 }}>
-                          <b>{m.course_code}</b> — {m.course_name}
-                          <br />
-                          {start}–{end} • {m.room || "Room TBA"} •{" "}
-                          {m.instructor || "Instructor TBA"}
-                          <br />
-                          <small>Credits: {m.credits}</small>
-                        </li>
-                      );
-                    })}
+                  <ul style={{ paddingLeft: 16 }}>
+                    {timetableByDay[day].map((m, i) => (
+                      <li key={i}>
+                        <b>{m.course_code}</b> — {m.course_name}
+                        <br />
+                        {m.start_time?.slice(0, 5)}–
+                        {m.end_time?.slice(0, 5)} • {m.room || "TBA"}
+                        <br />
+                        <small>Credits: {m.credits}</small>
+                      </li>
+                    ))}
                   </ul>
                 )}
               </div>
@@ -221,11 +198,7 @@ export default function MyTimetable() {
           </div>
 
           <div style={{ marginTop: 16 }}>
-            <button
-              className="btn"
-              onClick={handleSaveTimetable}
-              disabled={loading}
-            >
+            <button className="btn" onClick={handleSaveTimetable}>
               Save Timetable & Go to Semester Timetable
             </button>
           </div>

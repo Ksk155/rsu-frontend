@@ -112,7 +112,7 @@ export default function CourseSelection() {
           alt="RSU Logo"
           style={{
             height: 42,
-            maxWidth: "100%",
+            maxWidth: "120%",
             marginTop: 8,
           }}
         />
