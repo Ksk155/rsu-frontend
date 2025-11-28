@@ -65,7 +65,7 @@ export default function Schedule() {
       <header className="page-header">
         <h1 className="page-title">Semester Schedule (All Meeting Options)</h1>
         <p className="page-subtitle">
-          Below are all timetable meeting options (ICT + GE) stored in the
+          Below are all timetable meeting options for Term 1/2025 (ICT + GE) stored in the
           system for this semester.
         </p>
       </header>
