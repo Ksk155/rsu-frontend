@@ -2,6 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
+// ✅ adjust path if needed
+import rsuLogo from "../assets/rsu-logo-h.png";
+
 export default function TimetableDownload() {
   const [plan, setPlan] = useState([]);
   const pdfRef = useRef(null);
@@ -16,7 +19,6 @@ export default function TimetableDownload() {
     }
   }, []);
 
-  // Generate PDF directly
   const downloadPDF = async () => {
     const element = pdfRef.current;
     const canvas = await html2canvas(element, { scale: 2 });
@@ -34,13 +36,32 @@ export default function TimetableDownload() {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      
-      {/* CLEAN TIMETABLE SHEET */}
+      {/* ✅ PDF AREA */}
       <div ref={pdfRef} style={{ width: "100%", margin: "0 auto" }}>
-        <h2 style={{ textAlign: "center", marginBottom: "15px" }}>
-          RSU Semester Timetable
-        </h2>
 
+        {/* ===== HEADING WITH LOGO ===== */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "16px",
+            marginBottom: "15px",
+          }}
+        >
+          <h2 style={{ margin: 0 }}>RSU Semester Timetable</h2>
+
+          <img
+            src={rsuLogo}
+            alt="RSU Logo"
+            style={{
+              height: "42px",
+              objectFit: "contain",
+            }}
+          />
+        </div>
+
+        {/* ===== TABLE ===== */}
         <table
           style={{
             width: "100%",
@@ -81,7 +102,9 @@ export default function TimetableDownload() {
                     {r.credits}
                   </td>
                   <td style={{ padding: "6px" }}>{r.day}</td>
-                  <td style={{ padding: "6px" }}>{start}–{end}</td>
+                  <td style={{ padding: "6px" }}>
+                    {start}–{end}
+                  </td>
                   <td style={{ padding: "6px" }}>{r.room}</td>
                 </tr>
               );
@@ -90,7 +113,7 @@ export default function TimetableDownload() {
         </table>
       </div>
 
-      {/* MOVE BUTTON TO THE BOTTOM */}
+      {/* ===== BUTTON (NOT IN PDF) ===== */}
       <div
         style={{ textAlign: "center", marginTop: "25px" }}
         className="print-remove"
