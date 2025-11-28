@@ -92,11 +92,16 @@ export default function Timetable() {
   const conflicts = useMemo(() => detectConflicts(plan), [plan]);
 
   const onExportICS = () => {
-    if (!plan || plan.length === 0) {
-      alert("There is no timetable to export.");
-      return;
+    try {
+      if (!plan || plan.length === 0) {
+        alert("There is no timetable to export.");
+        return;
+      }
+      exportICS(plan, "RSU Semester Timetable");
+    } catch (err) {
+      console.error("Export .ics failed:", err);
+      alert("Export failed. Please check console for details.");
     }
-    exportICS(plan, "RSU Semester Timetable");
   };
 
   if (!studentId && !loading && !error) {
@@ -105,24 +110,6 @@ export default function Timetable() {
 
   return (
     <div className="card">
-      
-      {/* ✅ TOP RIGHT ACTION (beside Logout visually) */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: "8px",
-        }}
-      >
-        <button
-          className="btn ghost"
-          type="button"
-          onClick={() => navigate("/dashboard")}
-        >
-          Back to Dashboard
-        </button>
-      </div>
-
       <h2 style={{ marginTop: 0 }}>Semester Timetable</h2>
 
       {error && (
@@ -159,7 +146,7 @@ export default function Timetable() {
         </div>
       )}
 
-      {/* TABLE */}
+      {/* ===================== TABLE ===================== */}
       <div className="card printable-area" style={{ padding: "0px" }}>
         <table className="table">
           <thead>
@@ -177,6 +164,12 @@ export default function Timetable() {
             {loading && (
               <tr>
                 <td colSpan="7">Loading…</td>
+              </tr>
+            )}
+
+            {!loading && plan.length === 0 && !error && (
+              <tr>
+                <td colSpan="7">No entries.</td>
               </tr>
             )}
 
@@ -201,29 +194,45 @@ export default function Timetable() {
         </table>
       </div>
 
-      {/* BOTTOM BUTTONS (Back button REMOVED here ✅) */}
+      {/* ===================== BUTTONS ===================== */}
       <div
         className="print-remove"
         style={{
           display: "flex",
-          justifyContent: "flex-start",
-          gap: "8px",
+          justifyContent: "space-between",
+          alignItems: "center",
           marginTop: "12px",
           pointerEvents: "auto",
         }}
       >
-        <button className="btn" type="button" onClick={onExportICS}>
-          Export (.ics)
+        {/* LEFT SIDE */}
+        <div style={{ display: "flex", gap: "8px" }}>
+          <button className="btn" type="button" onClick={onExportICS}>
+            Export (.ics)
+          </button>
+
+          <a
+            href={`/timetable/download?id=${studentId}`}
+            className="btn"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download Timetable Page
+          </a>
+        </div>
+
+        {/* RIGHT SIDE */}
+        <button
+          className="btn ghost"
+          type="button"
+          onClick={() => {
+            window.location.href = "/dashboard";
+          }}
+        >
+          Back to Dashboard
         </button>
 
-        <a
-          href={`/timetable/download?id=${studentId}`}
-          className="btn"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Download Timetable Page
-        </a>
+
       </div>
     </div>
   );
